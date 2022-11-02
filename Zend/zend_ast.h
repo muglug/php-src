@@ -66,6 +66,7 @@ enum _zend_ast_kind {
 	ZEND_AST_ATTRIBUTE_LIST,
 	ZEND_AST_ATTRIBUTE_GROUP,
 	ZEND_AST_MATCH_ARM_LIST,
+	ZEND_AST_GENERIC_ARG_LIST,
 
 	/* 0 child nodes */
 	ZEND_AST_MAGIC_CONST = 0 << ZEND_AST_NUM_CHILDREN_SHIFT,
@@ -107,6 +108,7 @@ enum _zend_ast_kind {
 	ZEND_AST_GOTO,
 	ZEND_AST_BREAK,
 	ZEND_AST_CONTINUE,
+	ZEND_AST_GENERIC_ARRAY,
 
 	/* 2 child nodes */
 	ZEND_AST_DIM = 2 << ZEND_AST_NUM_CHILDREN_SHIFT,
@@ -149,7 +151,6 @@ enum _zend_ast_kind {
 	ZEND_AST_MATCH,
 	ZEND_AST_MATCH_ARM,
 	ZEND_AST_NAMED_ARG,
-	ZEND_AST_GENERIC_ARG_LIST,
 
 	/* 3 child nodes */
 	ZEND_AST_METHOD_CALL = 3 << ZEND_AST_NUM_CHILDREN_SHIFT,
@@ -325,6 +326,7 @@ static zend_always_inline zend_ast_list *zend_ast_get_list(zend_ast *ast) {
 }
 
 static zend_always_inline zval *zend_ast_get_zval(zend_ast *ast) {
+	printf ("%hu=", ast->kind);
 	ZEND_ASSERT(ast->kind == ZEND_AST_ZVAL);
 	return &((zend_ast_zval *) ast)->val;
 }

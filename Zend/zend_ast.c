@@ -729,6 +729,11 @@ static zend_result ZEND_FASTCALL zend_ast_evaluate_ex(zval *result, zend_ast *as
 				}
 			}
 			break;
+		case ZEND_AST_GENERIC_ARRAY:
+			if (ast->child[1] == NULL) {
+				zend_error_noreturn(E_COMPILE_ERROR, "Generic array must have parameters");
+			}
+			break;
 		case ZEND_AST_DIM:
 			if (ast->child[1] == NULL) {
 				zend_error_noreturn(E_COMPILE_ERROR, "Cannot use [] for reading");
@@ -1808,6 +1813,7 @@ tail_call:
 		case ZEND_AST_ARG_LIST:
 		case ZEND_AST_EXPR_LIST:
 		case ZEND_AST_PARAM_LIST:
+		case ZEND_AST_GENERIC_ARG_LIST:
 simple_list:
 			zend_ast_export_list(str, (zend_ast_list*)ast, 1, 20, indent);
 			break;

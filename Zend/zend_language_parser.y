@@ -852,7 +852,7 @@ type_expr_without_static:
 
 type_without_static:
 		T_ARRAY		{ $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_ARRAY); }
-	|	T_ARRAY '<' generic_arg_list '>'   { $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_ARRAY); }
+	|	T_ARRAY '<' generic_arg_list '>'   { $$ = zend_ast_create(ZEND_AST_GENERIC_ARRAY, $3); }
 	|	T_CALLABLE	{ $$ = zend_ast_create_ex(ZEND_AST_TYPE, IS_CALLABLE); }
 	|	name		{ $$ = $1; }
 ;
@@ -1304,10 +1304,10 @@ class_name:
 ;
 
 generic_arg_list:
-               type_expr
-                       { $$ = zend_ast_create_list(1, ZEND_AST_GENERIC_ARG_LIST, $1); }
-       |       generic_arg_list ',' type_expr
-                       { $$ = zend_ast_list_add($1, $3); }
+		type_expr
+			{ $$ = zend_ast_create_list(1, ZEND_AST_GENERIC_ARG_LIST, $1); }
+	|	generic_arg_list ',' type_expr
+			{ $$ = zend_ast_list_add($1, $3); }
 ;
 
 class_name_reference:

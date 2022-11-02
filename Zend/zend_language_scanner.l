@@ -1745,6 +1745,12 @@ NEWLINE ("\r"|"\n"|"\r\n")
 	RETURN_TOKEN_WITH_IDENT(T_ARRAY);
 }
 
+<ST_IN_SCRIPTING>"<"[a-zA-Z_\x80-\xff] {
+	CG(lt_nesting)++;
+	yyless(1);
+	RETURN_TOKEN('<');
+}
+
 <ST_IN_SCRIPTING>"callable" {
 	RETURN_TOKEN_WITH_IDENT(T_CALLABLE);
 }
@@ -1866,7 +1872,13 @@ NEWLINE ("\r"|"\n"|"\r\n")
 }
 
 <ST_IN_SCRIPTING>">>" {
-	RETURN_TOKEN(T_SR);
+	if (CG(lt_nesting) < 2) {
+		RETURN_TOKEN(T_SR);
+	}
+	CG(lt_nesting)--;
+	CG(lt_nesting)--;
+	yyless(1);
+	RETURN_TOKEN('>');
 }
 
 <ST_IN_SCRIPTING>"&"[ \t\r\n]*("$"|"...") {

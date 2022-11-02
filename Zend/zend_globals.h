@@ -139,6 +139,8 @@ struct _zend_compiler_globals {
 	uint32_t rtd_key_counter;
 
 	zend_stack short_circuiting_opnums;
+
+	int lt_nesting;
 };
 
 
